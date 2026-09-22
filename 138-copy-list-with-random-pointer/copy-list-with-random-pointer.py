@@ -9,12 +9,30 @@ class Node:
 from collections import defaultdict
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        oldtocopy = defaultdict(lambda : Node(0))
-        oldtocopy[None] = None
-        curr = head
-        while curr:
-            oldtocopy[curr].val = curr.val
-            oldtocopy[curr].next = oldtocopy[curr.next]
-            oldtocopy[curr].random = oldtocopy[curr.random]
-            curr = curr.next
-        return oldtocopy[head]
+        if head is None:
+            return None
+
+        l1 = head
+        while l1 :
+            l2 = Node(l1.val)
+            l2.next = l1.next
+            l1.next = l2
+            l1 = l2.next
+        newhead = head.next
+
+        l1 = head
+        while l1:
+            if l1.random is not None:
+                l1.next.random = l1.random.next
+            l1 = l1.next.next
+        
+        l1 = head
+        while l1:
+            l2 = l1.next
+            l1.next = l2.next
+            if l2.next is not None:
+                l2.next = l2.next.next
+            l1 = l1.next
+
+        return newhead
+
