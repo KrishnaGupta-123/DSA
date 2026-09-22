@@ -6,21 +6,15 @@ class Node:
         self.next = next
         self.random = random
 """
-
+from collections import defaultdict
 class Solution:
-    def __init__(self):
-        self.map = {}
-
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        oldtocopy = {None :None}
-
-        cur = head
-        while cur:
-            oldtocopy[cur] = Node(cur.val)
-            cur = cur.next
-        cur = head
-        while cur:
-            oldtocopy[cur].next = oldtocopy[cur.next]
-            oldtocopy[cur].random = oldtocopy[cur.random]
-            cur = cur.next
+        oldtocopy = defaultdict(lambda : Node(0))
+        oldtocopy[None] = None
+        curr = head
+        while curr:
+            oldtocopy[curr].val = curr.val
+            oldtocopy[curr].next = oldtocopy[curr.next]
+            oldtocopy[curr].random = oldtocopy[curr.random]
+            curr = curr.next
         return oldtocopy[head]
