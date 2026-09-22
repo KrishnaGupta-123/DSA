@@ -12,13 +12,15 @@ class Solution:
         self.map = {}
 
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        if head is None:
-            return None
-        if head in self.map:
-            return self.map[head]
+        oldtocopy = {None :None}
 
-        copy = Node(head.val)
-        self.map[head] = copy
-        copy.next = self.copyRandomList(head.next)
-        copy.random = self.map.get(head.random)
-        return copy
+        cur = head
+        while cur:
+            oldtocopy[cur] = Node(cur.val)
+            cur = cur.next
+        cur = head
+        while cur:
+            oldtocopy[cur].next = oldtocopy[cur.next]
+            oldtocopy[cur].random = oldtocopy[cur.random]
+            cur = cur.next
+        return oldtocopy[head]
