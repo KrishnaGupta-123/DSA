@@ -71,6 +71,24 @@ class BSTNode:
             self = self.right
         return self.data
 
+    def delete(self,val):
+        if self.data > val:
+            self.left = self.left.delete(val)
+        elif self.data < val:
+            self.right = self.right.delete(val)
+        else:
+            if not self.left and not self.right:
+                return None
+            if self.left is None:
+                return self.right
+            if self.right is None:
+                return self.left
+
+            min_val = self.right.find_min()
+            self.data = min_val
+            self.right = self.right.delete(min_val)
+        return self
+
 
 def Build_Tree(elements):
     if not elements:
@@ -120,6 +138,12 @@ def find_min(root):
 def find_max(root):
     print("Maximum:", root.find_max())
 
+def delete_ele(root):
+    data = int(input("Enter element to Delete:\t "))
+    print("Before Deletion:",root.inorderTraversal())
+    root.delete(data)
+    print("After Deletion:",root.inorderTraversal())
+
 def display_menu():
     print("\n========== BST MENU ==========")
     print("1. Insert element")
@@ -129,7 +153,8 @@ def display_menu():
     print("5. Postorder traversal")
     print("6. Find minimum")
     print("7. Find maximum")
-    print("8. Exit")
+    print("8. Delete element")
+    print("9. Exit")
     print("==============================")
 
 
@@ -148,13 +173,14 @@ if __name__ == "__main__":
         4: preorder,
         5: postorder,
         6: find_min,
-        7: find_max
+        7: find_max,
+        8: delete_ele
     }
 
     while True:
         display_menu()
         choice = int(input("Enter your choice: "))
-        if choice == 8:
+        if choice == 9:
             print("Exiting...")
             break
 
