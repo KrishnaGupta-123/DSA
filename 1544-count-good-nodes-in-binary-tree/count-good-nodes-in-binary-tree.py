@@ -6,17 +6,17 @@
 #         self.right = right
 class Solution:
     def findGN(self,root: TreeNode,maxVal : int):
-            res = []
+            count = 0
             if not root:
-                return res
+                return 0
             if root.val >= maxVal:
                 maxVal = root.val
-                res.append(maxVal)
-            res = res + self.findGN(root.left,maxVal)
-            res = res + self.findGN(root.right,maxVal)
-            return res
+                count += 1
+            count = count + self.findGN(root.left,maxVal)
+            count = count + self.findGN(root.right,maxVal)
+            return count
     def goodNodes(self, root: TreeNode) -> int:
         if not root:
             return 0
         maxVal = root.val
-        return len(self.findGN(root,maxVal))
+        return self.findGN(root,maxVal)
