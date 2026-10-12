@@ -5,20 +5,11 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    left_check = staticmethod(lambda val,limit: val < limit)
-    right_check = staticmethod(lambda val,limit : val > limit)
     def isValidBST(self, root: TreeNode | None) -> bool:
-        if not root:
-            return True
-        if (not self.isValid(root.left,root.val,self.left_check) or
-            not self.isValid(root.right,root.val,self.right_check)):
-            return False
-        return self.isValidBST(root.left) and self.isValidBST(root.right)
-    
-    def isValid(self,root:TreeNode | None , limit:int , check) -> bool:
-        if not root:
-            return True
-        if not check(root.val,limit):
-            return False
-        return self.isValid(root.left,limit,check) and self.isValid(root.right,limit,check)
-        
+        def valid(node,left,right):
+            if not node:
+                return True
+            if not (left < node.val < right):
+                return False
+            return valid(node.left,left,node.val) and valid(node.right,node.val,right)
+        return valid(root,float('-inf'),float('inf'))
