@@ -4,20 +4,23 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+import math
 class Solution:
-    def maxPathSum(self, root: TreeNode | None) -> int:
-        if not root:
-            return 0
-        maxpath = root.val
-        def helper(node):
-            nonlocal maxpath
-            if not node:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        ans=-math.inf
+
+        def search(node):
+            nonlocal ans
+            if node is None:
                 return 0
-            left_path = helper(node.left)
-            right_path = helper(node.right)
-            left_max = max(left_path,0)
-            right_max = max(right_path,0)
-            maxpath = max(maxpath,node.val + left_max + right_max)
-            return node.val + max(left_max,right_max)
-        helper(root)
-        return maxpath
+            let=search(node.left)
+            rit=search(node.right)
+            mid=node.val+let+rit
+            ans=max(mid,ans)
+            return max(node.val+max(let,rit),0)
+        search(root)
+        return ans
+
+            
+
+        
