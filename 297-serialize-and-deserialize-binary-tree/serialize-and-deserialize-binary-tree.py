@@ -5,6 +5,12 @@
 #         self.left = None
 #         self.right = None
 
+# 20 + 1, 2
+# 21, +2 , 3
+# 22, 4 ,5
+# [1, 2, 3, 4, 5]
+
+from collections import deque
 class Codec:
 
     def serialize(self, root):
@@ -13,57 +19,65 @@ class Codec:
         :type root: TreeNode
         :rtype: str
         """
-        if not root:
-            return "*#"
-        q = deque()
-        strs = ""
-        q.append(root)
-        while q:
-            node = q.popleft()
-            if node is not None:
-                q.append(node.left)
-                q.append(node.right)
-            if node:
-                strs += str(node.val) + "#"
-            else:
-                strs += "*" + "#"
-        return strs
-        
 
-    def deserialize(self, data):
+        if not root:
+            return ""
+
+        result = []
+        bfs = deque([root])
+
+        while bfs:
+            node = bfs.popleft()
+            if node:
+                result.append(str(node.val))
+                bfs.append(node.left)
+                bfs.append(node.right)
+            else:
+                result.append("#")
+        finalString = ",".join(result)
+        print("finalString",finalString)
+        return finalString
+
+    def deserialize(self, data2):
         """Decodes your encoded data to tree.
         
         :type data: str
         :rtype: TreeNode
         """
-        i,j = 0,0
-        n = len(data)
-        while data[j] != '#':
-            j += 1
-        if data[i:j] != '*':
-            root = TreeNode(int(data[i:j]))
-        else:
+        if data2 == "":
             return None
-        q = deque()
-        q.append(root)
-        i = j = j+1
-        while j != n:
-            node = q.popleft()
-            while data[j] != '#':
-                j += 1
-            if data[i:j] != '*':
-                node.left = TreeNode(int(data[i:j]))
-                q.append(node.left)
-            i=j=j+1
-            while data[j] != '#':
-                j += 1
-            if data[i:j] != '*':
-                node.right = TreeNode(int(data[i:j]))
-                q.append(node.right)
-            i=j=j+1
-        return root
 
-            
+        nodes = data2.split(",")
+        
+        i = 1
+
+        root = TreeNode(int(nodes[0]))
+
+        bfs = deque([root])
+
+        while bfs:
+            # print("root",root)
+            node = bfs.popleft()
+            node.left = None
+            node.right = None
+            # print("i left ", i)
+            # print("nodes [i]", nodes[i])
+        
+            if i<len(nodes) and nodes[i] != "#":
+                node.left = TreeNode(int(nodes[i]))
+                bfs.append(node.left)
+            i = i + 1
+            # print("i right ", i)
+            # print("nodes [i]", nodes[i])
+            if i<len(nodes) and  nodes[i] != "#":
+                node.right = TreeNode(int(nodes[i]))
+                bfs.append(node.right)
+            i = i + 1
+
+        return root
+                
+
+        
 
 # Your Codec object will be instantiated and called as such:
 # ser = Codec()
