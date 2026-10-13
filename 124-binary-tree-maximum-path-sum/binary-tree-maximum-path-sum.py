@@ -13,11 +13,11 @@ class Solution:
             nonlocal maxpath
             if not node:
                 return 0
-            left_path = node.val + helper(node.left)
-            right_path = node.val + helper(node.right)
-            total_path = left_path + right_path - node.val
-            curr_max_path = max(left_path,right_path,total_path,node.val)
-            maxpath = max(maxpath,curr_max_path)
-            return max(left_path,right_path,node.val)
+            left_path = helper(node.left)
+            right_path = helper(node.right)
+            left_max = max(left_path,0)
+            right_max = max(right_path,0)
+            maxpath = max(maxpath,node.val + left_max + right_max)
+            return node.val + max(left_max,right_max)
         helper(root)
         return maxpath
