@@ -6,9 +6,12 @@ class Solution:
         r = len(nums) - 1
         res = nums[l]
         while True:
-            if nums[l] > nums[r]:
-                l += 1
-            else:
+            if l == r:
                 res = nums[l]
                 break
+            m = (l+r)//2
+            if nums[m] > nums[r]:
+                l = m + 1
+            else:
+                r = m
         return res
